@@ -14,13 +14,16 @@ declare(strict_types=1);
  */
 // phpcs:enable
 
-namespace Klein\Exceptions;
+namespace Klein\DataCollection;
 
 /**
- * Unknown Service Exception.
- *
- * Exception used for when a service was called that doesn't exist.
+ * Interface for the data collection.
  */
-class UnknownServiceException extends \OutOfBoundsException implements KleinExceptionInterface {
+interface DataCollectionInterface {
+
+  /**
+   * Constructor.
+   */
+  public function __construct();
 
 }
