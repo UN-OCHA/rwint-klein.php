@@ -1,3 +1,10 @@
-<h1><?php echo ucfirst($this->shared_data->get('title')); ?></h1>
+<?php
+
+/**
+ * @file
+ * Layout.
+ */
+?>
+<h1><?php echo ucfirst($this->sharedData->get('title')); ?></h1>
 <?php $this->yieldView(); ?>
 <div>footer</div>

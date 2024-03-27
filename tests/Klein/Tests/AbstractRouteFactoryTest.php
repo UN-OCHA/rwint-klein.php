@@ -1,95 +1,102 @@
 <?php
+
+declare(strict_types=1);
+
+// phpcs:disable
 /**
  * Klein (klein.php) - A fast & flexible router for PHP
  *
- * @author      Chris O'Hara <cohara87@gmail.com>
- * @author      Trevor Suarez (Rican7) (contributor and v2 refactorer)
- * @copyright   (c) Chris O'Hara
- * @link        https://github.com/klein/klein.php
- * @license     MIT
+ * @author Chris O'Hara <cohara87@gmail.com>
+ * @author Trevor Suarez (Rican7) (contributor and v2 refactorer)
+ * @copyright (c) Chris O'Hara
+ * @link https://github.com/klein/klein.php
+ * @license MIT
  */
+// phpcs:enable
 
 namespace Klein\Tests;
 
-use Klein\AbstractRouteFactory;
-use Klein\Route;
-
 /**
- * AbstractRouteFactoryTest
+ * Abstract Route Factory Test.
  */
-class AbstractRouteFactoryTest extends AbstractKleinTest
-{
+class AbstractRouteFactoryTest extends AbstractKleinTest {
 
-    /**
-     * Helpers
-     */
+  /**
+   * Helpers.
+   */
+  protected function getDefaultMethodsToMock() {
+    return [
+      'build',
+    ];
+  }
 
-    protected function getDefaultMethodsToMock()
-    {
-        return array(
-            'build',
-        );
-    }
+  /**
+   * Get mock for factory.
+   */
+  protected function getMockForFactory() {
+    return $this->getMockForAbstractClass('\Klein\AbstractRouteFactory');
+  }
 
-    protected function getMockForFactory()
-    {
-        return $this->getMockForAbstractClass('\Klein\AbstractRouteFactory');
-    }
+  /**
+   * Get mock builder for factory.
+   */
+  protected function getMockBuilderForFactory(array $methods_to_mock = NULL) {
+    $methods_to_mock = $methods_to_mock ?: $this->getDefaultMethodsToMock();
 
-    protected function getMockBuilderForFactory(array $methods_to_mock = null)
-    {
-        $methods_to_mock = $methods_to_mock ?: $this->getDefaultMethodsToMock();
+    return $this->getMockBuilder('\Klein\AbstractRouteFactory')
+      ->setMethods($methods_to_mock);
+  }
 
-        return $this->getMockBuilder('\Klein\AbstractRouteFactory')
-            ->setMethods($methods_to_mock);
-    }
+  /**
+   * Tests.
+   */
 
+  /**
+   * Test namespace get set.
+   */
+  public function testNamespaceGetSet() {
+    // Test data.
+    $test_namespace = '/users';
 
-    /**
-     * Tests
-     */
+    // Empty constructor.
+    $factory = $this->getMockForFactory();
 
-    public function testNamespaceGetSet()
-    {
-        // Test data
-        $test_namespace = '/users';
+    $this->assertEmpty($factory->getNamespace());
 
-        // Empty constructor
-        $factory = $this->getMockForFactory();
+    // Set in constructor.
+    $factory = $this->getMockBuilderForFactory()
+      ->setConstructorArgs(
+        [
+          $test_namespace,
+        ]
+      )
+      ->getMock();
 
-        $this->assertNull($factory->getNamespace());
+    $this->assertSame($test_namespace, $factory->getNamespace());
 
-        // Set in constructor
-        $factory = $this->getMockBuilderForFactory()
-            ->setConstructorArgs(
-                array(
-                    $test_namespace,
-                )
-            )
-            ->getMock();
+    // Set in method.
+    $factory = $this->getMockForFactory();
+    $factory->setNamespace($test_namespace);
 
-        $this->assertSame($test_namespace, $factory->getNamespace());
+    $this->assertSame($test_namespace, $factory->getNamespace());
+  }
 
-        // Set in method
-        $factory = $this->getMockForFactory();
-        $factory->setNamespace($test_namespace);
+  /**
+   * Test append namespace.
+   */
+  public function testAppendNamespace() {
+    // Test data.
+    $test_namespace = '/users';
+    $test_namespace_append = '/names';
 
-        $this->assertSame($test_namespace, $factory->getNamespace());
-    }
+    $factory = $this->getMockForFactory();
+    $factory->setNamespace($test_namespace);
+    $factory->appendNamespace($test_namespace_append);
 
-    public function testAppendNamespace()
-    {
-        // Test data
-        $test_namespace = '/users';
-        $test_namespace_append = '/names';
+    $this->assertSame(
+      $test_namespace . $test_namespace_append,
+      $factory->getNamespace()
+    );
+  }
 
-        $factory = $this->getMockForFactory();
-        $factory->setNamespace($test_namespace);
-        $factory->appendNamespace($test_namespace_append);
-
-        $this->assertSame(
-            $test_namespace . $test_namespace_append,
-            $factory->getNamespace()
-        );
-    }
 }
