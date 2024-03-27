@@ -290,7 +290,7 @@ class Request
      *
      * @param string $key       The name of the parameter to return
      * @param mixed $default    The default value of the parameter if it contains no value
-     * @return mixed
+     * @return string
      */
     public function param($key, $default = null)
     {
@@ -324,7 +324,7 @@ class Request
      * while treating it as an instance property
      *
      * @param string $param     The name of the parameter
-     * @return mixed
+     * @return string
      */
     public function __get($param)
     {
