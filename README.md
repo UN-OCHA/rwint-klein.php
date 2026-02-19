@@ -1,6 +1,6 @@
 # Klein.php
 
-**Note:** This `rwint-klein.php` is an updated version of https://github.com/klein/klein.php to work with PHP 8.2+ and therefore is not compatible with older versions of PHP.
+**Note:** This `rwint-klein.php` is an updated version of https://github.com/klein/klein.php to work with PHP 8.5+ and therefore is not compatible with older versions of PHP.
 
 **klein.php** is a fast & flexible router for PHP 8+
 
@@ -10,7 +10,7 @@
 
 ## Getting started
 
-1. PHP 8.2.x is required
+1. PHP 8.5.x is required
 2. Install Klein using [Composer](#composer-installation) (recommended) or manually
 3. Setup [URL rewriting](https://gist.github.com/874000) so that all requests are handled by **index.php**
 4. (Optional) Throw in some [APC](http://pecl.php.net/package/APC) for good measure

@@ -49,7 +49,7 @@ abstract class AbstractKleinTest extends TestCase {
    * It runs before each test.
    */
   protected function setUp(): void {
-    $app = new class() extends App {
+    $app = new class () extends App {
 
       /**
        * Dummy variable used by the tests.
@@ -59,7 +59,6 @@ abstract class AbstractKleinTest extends TestCase {
        * @see \Klein\Tests\RoutingTest
        */
       public string $state;
-
     };
 
     // Create a new klein app, since we need one pretty much everywhere.
@@ -142,13 +141,13 @@ abstract class AbstractKleinTest extends TestCase {
   /**
    * Loads externally defined routes under the filename's namespace.
    *
-   * @param \Klein\Klein $app_context
+   * @param ?\Klein\Klein $app_context
    *   The application context to attach the routes to.
    *
    * @return array
    *   Route namespaces.
    */
-  protected function loadExternalRoutes(Klein $app_context = NULL) {
+  protected function loadExternalRoutes(?Klein $app_context = NULL) {
     // Did we not pass an instance?
     if (is_null($app_context)) {
       $app_context = $this->kleinApp ?: new Klein();

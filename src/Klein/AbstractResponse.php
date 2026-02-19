@@ -353,7 +353,8 @@ abstract class AbstractResponse {
 
     // Iterate through our Headers data collection and send each header.
     foreach ($this->headers as $key => $value) {
-      header($key . ': ' . $value, FALSE);
+      $headerValue = is_scalar($value) ? (string) $value : '';
+      header((string) $key . ': ' . $headerValue, FALSE);
     }
 
     if ($cookies_also) {
@@ -527,7 +528,7 @@ abstract class AbstractResponse {
     string $path = '/',
     string $domain = '',
     bool $secure = FALSE,
-    bool $httponly = FALSE
+    bool $httponly = FALSE,
   ): static {
     if (NULL === $expiry) {
       $expiry = time() + (3600 * 24 * 30);

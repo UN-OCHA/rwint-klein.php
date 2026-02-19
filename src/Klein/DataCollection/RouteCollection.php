@@ -35,7 +35,7 @@ class RouteCollection extends DataCollection {
    * @param callable[]|\Klein\Route[] $routes
    *   The routes of this collection.
    *
-   * @override (doesn't call our parent).
+   * @override
    */
   public function __construct(array $routes = []) {
     foreach ($routes as $value) {

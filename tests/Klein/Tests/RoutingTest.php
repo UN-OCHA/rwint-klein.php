@@ -443,7 +443,6 @@ class RoutingTest extends AbstractKleinTest {
     $this->kleinApp->respond(
       '/two',
       function () {
-
       }
     );
     $this->kleinApp->respond(
@@ -479,7 +478,6 @@ class RoutingTest extends AbstractKleinTest {
     $this->kleinApp->respond(
       '/two',
       function () {
-
       }
     );
     $this->kleinApp->respond(
@@ -1256,6 +1254,8 @@ class RoutingTest extends AbstractKleinTest {
    * Test NS dispatch external.
    */
   public function testNsDispatchExternal() {
+    $ext_namespaces = $this->loadExternalRoutes();
+
     $this->kleinApp->respond(
       404,
       function ($request, $response) {

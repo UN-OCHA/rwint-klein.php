@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Klein\Tests;
 
 use Klein\App;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Klein\DataCollection\RouteCollection;
 use Klein\Exceptions\DispatchHaltedException;
 use Klein\Exceptions\HttpExceptionInterface;
@@ -36,7 +37,7 @@ class KleinTest extends AbstractKleinTest {
    * Constants.
    */
 
-  const TEST_CALLBACK_MESSAGE = 'yay';
+  public const TEST_CALLBACK_MESSAGE = 'yay';
 
   /**
    * Helpers.
@@ -172,8 +173,8 @@ class KleinTest extends AbstractKleinTest {
    * Weird PHPUnit bug is causing scope errors for the
    * isolated process tests, unless I run this also in an
    * isolated process.
-   *
-   * @runInSeparateProcess */
+   */
+  #[RunInSeparateProcess]
   public function testWithUsingFileInclude() {
     // Test data.
     $test_namespace = '/test/namespace';

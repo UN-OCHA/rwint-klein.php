@@ -32,8 +32,7 @@ class RouteFactory extends AbstractRouteFactory {
    *
    * @type string
    */
-  const NULL_PATH_VALUE = '*';
-
+  public const NULL_PATH_VALUE = '*';
 
   /**
    * Methods.
@@ -88,7 +87,8 @@ class RouteFactory extends AbstractRouteFactory {
     $path = (NULL === $path) ? static::NULL_PATH_VALUE : (string) $path;
 
     // If a custom regular expression (or negated custom regex).
-    if ($this->namespace
+    if (
+      $this->namespace
       && (isset($path[0]) && $path[0] === '@')
       || (isset($path[0]) && $path[0] === '!' && isset($path[1]) && $path[1] === '@')
     ) {
@@ -116,7 +116,6 @@ class RouteFactory extends AbstractRouteFactory {
       else {
         $path = '@^' . $this->namespace . $path;
       }
-
     }
 
     elseif ($this->namespace && $this->pathIsNull($path)) {
@@ -153,7 +152,7 @@ class RouteFactory extends AbstractRouteFactory {
     ?string $path = NULL,
     string|array|null $method = NULL,
     ?bool $count_match = TRUE,
-    ?string $name = NULL
+    ?string $name = NULL,
   ): Route {
     return new Route(
       $callback,

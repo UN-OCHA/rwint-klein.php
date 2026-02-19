@@ -90,8 +90,8 @@ class DataCollection implements DataCollectionInterface, \IteratorAggregate, \Ar
        * that aren't in the passed mask
        */
       return array_intersect(
-      array_keys($this->attributes),
-      $mask
+        array_keys($this->attributes),
+        $mask
       ) + $keys;
     }
 
@@ -216,14 +216,14 @@ class DataCollection implements DataCollectionInterface, \IteratorAggregate, \Ar
       // Hard merge?
       if ($hard) {
         $this->attributes = array_replace(
-        $this->attributes,
-        $attributes
+          $this->attributes,
+          $attributes
         );
       }
       else {
         $this->attributes = array_merge(
-        $this->attributes,
-        $attributes
+          $this->attributes,
+          $attributes
         );
       }
     }

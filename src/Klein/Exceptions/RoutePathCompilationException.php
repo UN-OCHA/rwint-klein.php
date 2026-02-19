@@ -34,14 +34,14 @@ class RoutePathCompilationException extends \RuntimeException implements KleinEx
    *
    * @type string
    */
-  const MESSAGE_FORMAT = 'Route failed to compile with path "%s".';
+  public const MESSAGE_FORMAT = 'Route failed to compile with path "%s".';
 
   /**
    * The extra failure message format.
    *
    * @type string
    */
-  const FAILURE_MESSAGE_TITLE_FORMAT = 'Failed with message: "%s"';
+  public const FAILURE_MESSAGE_TITLE_FORMAT = 'Failed with message: "%s"';
 
 
   /**
@@ -74,7 +74,7 @@ class RoutePathCompilationException extends \RuntimeException implements KleinEx
    * @todo Change the `$previous` parameter to type-hint against `Throwable`
    * once PHP 5.x support is no longer necessary.
    */
-  public static function createFromRoute(Route $route, \Throwable $previous = NULL): RoutePathCompilationException {
+  public static function createFromRoute(Route $route, ?\Throwable $previous = NULL): RoutePathCompilationException {
     $error = (NULL !== $previous) ? $previous->getMessage() : NULL;
     $code = (NULL !== $previous) ? $previous->getCode() : 0;
 

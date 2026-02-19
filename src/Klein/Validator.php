@@ -203,7 +203,7 @@ class Validator {
         break;
     }
 
-    $result = (bool) ($result ^ $reverse);
+    $result = (bool) ((bool) $result ^ $reverse);
 
     if (FALSE === $this->error) {
       return $result;

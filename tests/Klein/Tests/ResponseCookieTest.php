@@ -17,6 +17,7 @@ declare(strict_types=1);
 namespace Klein\Tests;
 
 use Klein\ResponseCookie;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Response Cookie Test.
@@ -33,7 +34,7 @@ class ResponseCookieTest extends AbstractKleinTest {
    * @return array
    *   Sample data.
    */
-  public function sampleDataProvider() {
+  public static function sampleDataProvider(): array {
     // Populate our sample data.
     $default_sample_data = [
       'name' => '',
@@ -76,9 +77,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test name get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testNameGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie($sample_data['name']);
 
@@ -93,9 +93,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test value get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testValueGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie($defaults['name'], $sample_data['value']);
 
@@ -110,9 +109,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test expire get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testExpireGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie(
       $defaults['name'],
@@ -131,9 +129,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test path get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testPathGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie(
       $defaults['name'],
@@ -153,9 +150,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test domain get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testDomainGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie(
       $defaults['name'],
@@ -176,9 +172,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test secure get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testSecureGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie(
       $defaults['name'],
@@ -200,9 +195,8 @@ class ResponseCookieTest extends AbstractKleinTest {
 
   /**
    * Test http only get set.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testHttpOnlyGetSet($defaults, $sample_data, $sample_data_other) {
     $response_cookie = new ResponseCookie(
       $defaults['name'],

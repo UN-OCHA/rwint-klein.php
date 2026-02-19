@@ -171,10 +171,7 @@ class HttpStatus {
    */
   public function getFormattedString(): string {
     $string = (string) $this->code;
-
-    if (NULL !== $this->message) {
-      $string = $string . ' ' . $this->message;
-    }
+    $string = $string . ' ' . $this->message;
 
     return $string;
   }

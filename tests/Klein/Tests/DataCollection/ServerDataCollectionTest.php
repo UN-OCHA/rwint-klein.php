@@ -18,6 +18,7 @@ namespace Klein\Tests\DataCollection;
 
 use Klein\DataCollection\ServerDataCollection;
 use Klein\Tests\AbstractKleinTest;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Server Data Collection Test.
@@ -34,7 +35,7 @@ class ServerDataCollectionTest extends AbstractKleinTest {
    * @return array
    *   Sample data.
    */
-  public function sampleDataProvider() {
+  public static function sampleDataProvider(): array {
     // Populate our sample data.
     $sample_data = [
       'DOCUMENT_ROOT' => '/cygdrive/d/Trevor/tmp',
@@ -90,9 +91,8 @@ class ServerDataCollectionTest extends AbstractKleinTest {
 
   /**
    * Test get headers.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testGetHeaders($sample_data, $data_collection) {
     $http_headers = $data_collection->getHeaders();
 

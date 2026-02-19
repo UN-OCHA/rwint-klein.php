@@ -28,7 +28,7 @@ class RouteFactoryTest extends AbstractKleinTest {
    * Constants.
    */
 
-  const TEST_CALLBACK_MESSAGE = 'yay';
+  public const TEST_CALLBACK_MESSAGE = 'yay';
 
   /**
    * Helpers.
@@ -54,7 +54,7 @@ class RouteFactoryTest extends AbstractKleinTest {
     $test_namespace = NULL,
     $test_path = NULL,
     $test_paths_match = TRUE,
-    $should_match = TRUE
+    $should_match = TRUE,
   ) {
     // Test data.
     $test_path = is_string($test_path) ? $test_path : '/test';

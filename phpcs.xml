@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="klein">
+  <description>PHP CodeSniffer configuration for Klein (PSR-12, codebase style).</description>
+  <file>.</file>
+  <arg name="extensions" value="php"/>
+
+  <exclude-pattern>./vendor/*</exclude-pattern>
+  <exclude-pattern>node_modules/*</exclude-pattern>
+
+  <rule ref="PSR12">
+    <!-- Opening brace on same line (class and methods). -->
+    <exclude name="PSR2.Classes.ClassDeclaration.OpenBraceNewLine"/>
+    <exclude name="Squiz.Functions.MultiLineFunctionDeclaration.BraceOnSameLine"/>
+    <!-- Allow blank line after opening brace. -->
+    <exclude name="PSR12.Classes.OpeningBraceSpace.Found"/>
+    <!-- Allow newline after closing brace. -->
+    <exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseBrace"/>
+    <!-- Allow TRUE, FALSE, NULL (uppercase). -->
+    <exclude name="Generic.PHP.LowerCaseConstant.Found"/>
+    <!-- Switch case: allow break/return indent style. -->
+    <exclude name="PSR2.ControlStructures.SwitchDeclaration.BreakIndent"/>
+    <!-- Class closing brace on same line as body. -->
+    <exclude name="PSR2.Classes.ClassDeclaration.CloseBraceAfterBody"/>
+  </rule>
+
+  <!-- 2-space indentation (codebase standard). -->
+  <rule ref="Generic.WhiteSpace.ScopeIndent">
+    <properties>
+      <property name="indent" value="2"/>
+      <property name="tabIndent" value="false"/>
+    </properties>
+  </rule>
+
+  <!-- Enforce 2-space indent for multi-line declarations and calls (still report wrong indent e.g. 3 spaces). -->
+  <rule ref="Squiz.Functions.MultiLineFunctionDeclaration">
+    <properties>
+      <property name="indent" value="2"/>
+    </properties>
+  </rule>
+  <rule ref="PSR2.Methods.FunctionCallSignature">
+    <properties>
+      <property name="indent" value="2"/>
+    </properties>
+  </rule>
+  <!-- Multi-line control structure conditions: 2-space indent. -->
+  <rule ref="PSR12.ControlStructures.ControlStructureSpacing">
+    <properties>
+      <property name="indent" value="2"/>
+    </properties>
+  </rule>
+</ruleset>

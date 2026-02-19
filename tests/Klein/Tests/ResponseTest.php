@@ -17,6 +17,8 @@ declare(strict_types=1);
 namespace Klein\Tests;
 
 use Klein\DataCollection\HeaderDataCollection;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Klein\DataCollection\ResponseCookieDataCollection;
 use Klein\Exceptions\LockedResponseException;
 use Klein\Exceptions\ResponseAlreadySentException;
@@ -230,9 +232,8 @@ class ResponseTest extends AbstractKleinTest {
 
   /**
    * Test send headers in isolate process.
-   *
-   * @runInSeparateProcess
    */
+  #[RunInSeparateProcess]
   public function testSendHeadersInIsolateProcess() {
     $this->testSendHeaders();
   }
@@ -256,8 +257,8 @@ class ResponseTest extends AbstractKleinTest {
 
   /**
    * Test send cookies in isolate process.
-   *
-   * @runInSeparateProcess */
+   */
+  #[RunInSeparateProcess]
   public function testSendCookiesInIsolateProcess() {
     $this->testSendCookies();
   }
@@ -303,9 +304,8 @@ class ResponseTest extends AbstractKleinTest {
    * This uses some crazy exploitation to make sure that the
    * `fastcgi_finish_request()` function gets called.
    * Because of this, this MUST be run in a separate process.
-   *
-   * @runInSeparateProcess
    */
+  #[RunInSeparateProcess]
   public function testSendCallsFastCgiFinishRequest() {
     // Custom fastcgi function.
     implement_custom_fastcgi_function();
@@ -369,9 +369,8 @@ class ResponseTest extends AbstractKleinTest {
 
   /**
    * Test cookie.
-   *
-   * @group testCookie
    */
+  #[Group('testCookie')]
   public function testCookie() {
     $test_cookie_data = [
       'name'   => 'name',
@@ -576,9 +575,8 @@ class ResponseTest extends AbstractKleinTest {
    * This uses some crazy exploitation to make sure that the
    * `fastcgi_finish_request()` function gets called.
    * Because of this, this MUST be run in a separate process.
-   *
-   * @runInSeparateProcess
    */
+  #[RunInSeparateProcess]
   public function testFileSendCallsFastCgiFinishRequest() {
     // Custom fastcgi function.
     implement_custom_fastcgi_function();

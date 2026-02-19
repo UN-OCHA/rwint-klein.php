@@ -94,7 +94,6 @@ class ServerDataCollection extends DataCollection {
       if (self::hasPrefix((string) $key, self::$httpHeaderPrefix)) {
         // Add our server attribute to our header array.
         $headers[substr($key, strlen(self::$httpHeaderPrefix))] = $value;
-
       }
 
       elseif (in_array($key, self::$httpNonprefixedHeaders)) {
