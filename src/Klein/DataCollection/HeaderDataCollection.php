@@ -34,7 +34,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_NONE = 0;
+  public const NORMALIZE_NONE = 0;
 
   /**
    * Normalization option.
@@ -43,7 +43,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_TRIM = 1;
+  public const NORMALIZE_TRIM = 1;
 
   /**
    * Normalization option.
@@ -52,7 +52,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_DELIMITERS = 2;
+  public const NORMALIZE_DELIMITERS = 2;
 
   /**
    * Normalization option.
@@ -61,7 +61,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_CASE = 4;
+  public const NORMALIZE_CASE = 4;
 
   /**
    * Normalization option.
@@ -70,7 +70,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_CANONICAL = 8;
+  public const NORMALIZE_CANONICAL = 8;
 
   /**
    * Normalization option.
@@ -79,7 +79,7 @@ class HeaderDataCollection extends DataCollection {
    *
    * @type int
    */
-  const NORMALIZE_ALL = -1;
+  public const NORMALIZE_ALL = -1;
 
 
   /**
@@ -109,7 +109,7 @@ class HeaderDataCollection extends DataCollection {
    * @param int $normalization
    *   $normalization The header key normalization technique/style to use.
    *
-   * @override (doesn't call our parent).
+   * @override
    */
   public function __construct(array $headers = [], int $normalization = self::NORMALIZE_ALL) {
     $this->normalization = (int) $normalization;

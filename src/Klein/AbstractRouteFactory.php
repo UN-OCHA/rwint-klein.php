@@ -115,7 +115,7 @@ abstract class AbstractRouteFactory {
     ?string $path = NULL,
     string|array|null $method = NULL,
     ?bool $count_match = NULL,
-    ?string $name = NULL
+    ?string $name = NULL,
   );
 
 }

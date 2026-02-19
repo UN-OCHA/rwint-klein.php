@@ -1,4 +1,5 @@
 # Composer
+.composer/
 composer.lock
 vendor/
 
@@ -7,3 +8,6 @@ docs/
 
 # Auto-generated code coverage report
 report/
+
+# PHPUnit
+.phpunit.result.cache

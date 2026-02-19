@@ -106,7 +106,8 @@ class Route {
     ?string $path = NULL,
     string|array|null $method = NULL,
     ?bool $count_match = TRUE,
-    ?string $name = NULL) {
+    ?string $name = NULL,
+  ) {
     // Initialize some properties (use our setters so we can validate param
     // types).
     $this->setCallback($callback);
@@ -202,7 +203,17 @@ class Route {
       throw new \InvalidArgumentException('Expected an array or string. Got a ' . gettype($method));
     }
 
-    $this->method = $method ?: NULL;
+    if ($method === NULL) {
+      $this->method = NULL;
+    }
+    elseif (is_string($method)) {
+      $this->method = $method;
+    }
+    else {
+      $this->method = array_values(array_map(static function (mixed $m): string {
+        return is_scalar($m) ? (string) $m : '';
+      }, $method));
+    }
 
     return $this;
   }

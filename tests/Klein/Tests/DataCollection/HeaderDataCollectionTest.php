@@ -18,6 +18,7 @@ namespace Klein\Tests\DataCollection;
 
 use Klein\DataCollection\HeaderDataCollection;
 use Klein\Tests\AbstractKleinTest;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Header Data Collection Test.
@@ -44,14 +45,14 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
    * @param array $sample_data
    *   Sample data.
    */
-  protected function prepareSampleData(&$sample_data) {
+  protected static function prepareSampleData(array &$sample_data): void {
     if (isset($sample_data[static::$nonexistentKey])) {
       unset($sample_data[static::$nonexistentKey]);
     }
 
     foreach ($sample_data as &$data) {
       if (is_array($data)) {
-        $this->prepareSampleData($data);
+        self::prepareSampleData($data);
       }
     }
     reset($sample_data);
@@ -63,7 +64,7 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
    * @return array
    *   Sample data.
    */
-  public function sampleDataProvider() {
+  public static function sampleDataProvider(): array {
     // Populate our sample data.
     $sample_data = [
       'HOST' => 'localhost:8000',
@@ -81,7 +82,7 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
       'ACCEPT_CHARSET' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.3',
     ];
 
-    $this->prepareSampleData($sample_data);
+    self::prepareSampleData($sample_data);
 
     $data_collection = new HeaderDataCollection($sample_data);
 
@@ -96,9 +97,8 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
 
   /**
    * Test constructor correctly formatted.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testConstructorCorrectlyFormatted($sample_data, $data_collection) {
     $this->assertNotSame($sample_data, $data_collection->all());
     $this->assertArrayNotHasKey('HOST', $data_collection->all());
@@ -125,9 +125,8 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
 
   /**
    * Test get.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testGet($sample_data, $data_collection) {
     $default = 'WOOT!';
 
@@ -158,9 +157,8 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
 
   /**
    * Test exists.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testExists($sample_data, $data_collection) {
     // Make sure the set worked, but the key is different.
     $this->assertTrue($data_collection->exists('HOST'));
@@ -170,9 +168,8 @@ class HeaderDataCollectionTest extends AbstractKleinTest {
 
   /**
    * Test remove.
-   *
-   * @dataProvider sampleDataProvider
    */
+  #[DataProvider('sampleDataProvider')]
   public function testRemove($sample_data, $data_collection) {
     $this->assertTrue($data_collection->exists('HOST'));
     $this->assertArrayNotHasKey('HOST', $data_collection->all());

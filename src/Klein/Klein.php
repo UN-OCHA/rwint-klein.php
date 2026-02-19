@@ -41,14 +41,14 @@ class Klein {
    *
    * @type string
    */
-  const ROUTE_COMPILE_REGEX = '`(\\\?(?:/|\.|))(?:\[([^:\]]*)(?::([^:\]]*))?\])(\?|)`';
+  public const ROUTE_COMPILE_REGEX = '`(\\\?(?:/|\.|))(?:\[([^:\]]*)(?::([^:\]]*))?\])(\?|)`';
 
   /**
    * Regular expression to escape the non-named param section of a route URL.
    *
    * @type string
    */
-  const ROUTE_ESCAPE_REGEX = '`(?<=^|\])[^\]\[\?]+?(?=\[|$)`';
+  public const ROUTE_ESCAPE_REGEX = '`(?<=^|\])[^\]\[\?]+?(?=\[|$)`';
 
   /**
    * Dispatch route output handling.
@@ -57,7 +57,7 @@ class Klein {
    *
    * @type int
    */
-  const DISPATCH_NO_CAPTURE = 0;
+  public const DISPATCH_NO_CAPTURE = 0;
 
   /**
    * Dispatch route output handling.
@@ -66,7 +66,7 @@ class Klein {
    *
    * @type int
    */
-  const DISPATCH_CAPTURE_AND_RETURN = 1;
+  public const DISPATCH_CAPTURE_AND_RETURN = 1;
 
   /**
    * Dispatch route output handling.
@@ -75,7 +75,7 @@ class Klein {
    *
    * @type int
    */
-  const DISPATCH_CAPTURE_AND_REPLACE = 2;
+  public const DISPATCH_CAPTURE_AND_REPLACE = 2;
 
   /**
    * Dispatch route output handling.
@@ -84,7 +84,7 @@ class Klein {
    *
    * @type int
    */
-  const DISPATCH_CAPTURE_AND_PREPEND = 3;
+  public const DISPATCH_CAPTURE_AND_PREPEND = 3;
 
   /**
    * Dispatch route output handling.
@@ -93,7 +93,7 @@ class Klein {
    *
    * @type int
    */
-  const DISPATCH_CAPTURE_AND_APPEND = 4;
+  public const DISPATCH_CAPTURE_AND_APPEND = 4;
 
 
   /**
@@ -219,10 +219,10 @@ class Klein {
    *   A factory class responsible for creating Route instances.
    */
   public function __construct(
-    ServiceProvider $service = NULL,
+    ?ServiceProvider $service = NULL,
     mixed $app = NULL,
-    RouteCollection $routes = NULL,
-    AbstractRouteFactory $route_factory = NULL
+    ?RouteCollection $routes = NULL,
+    ?AbstractRouteFactory $route_factory = NULL,
   ) {
     // Instanciate and fall back to defaults.
     $this->service = $service ?: new ServiceProvider();
@@ -352,7 +352,17 @@ class Klein {
 
     $callback = is_callable($args['callback']) ? $args['callback'] : NULL;
     $path = is_string($args['path']) || is_int($args['path']) ? (string) $args['path'] : RouteFactory::NULL_PATH_VALUE;
-    $method = is_string($args['method']) || is_array($args['method']) ? $args['method'] : NULL;
+    $method = NULL;
+    if (isset($args['method'])) {
+      if (is_string($args['method'])) {
+        $method = $args['method'];
+      }
+      elseif (is_array($args['method'])) {
+        $method = array_filter(array_values(array_map(static function (mixed $m): string {
+          return is_scalar($m) ? (string) $m : '';
+        }, $args['method'])));
+      }
+    }
 
     return $this->doRespond($callback, $path, $method);
   }
@@ -376,7 +386,11 @@ class Klein {
    * @throws \RuntimeException
    *   Exception if the callback is missing.
    */
-  protected function doRespond(?callable $callback = NULL, ?string $path = RouteFactory::NULL_PATH_VALUE, string|array|null $method = NULL): Route {
+  protected function doRespond(
+    ?callable $callback = NULL,
+    ?string $path = RouteFactory::NULL_PATH_VALUE,
+    string|array|null $method = NULL,
+  ): Route {
     if (is_null($callback)) {
       throw new \RuntimeException('Missing callback to respond.');
     }
@@ -455,10 +469,10 @@ class Klein {
    *   The result to display or nothing.
    */
   public function dispatch(
-    Request $request = NULL,
-    AbstractResponse $response = NULL,
+    ?Request $request = NULL,
+    ?AbstractResponse $response = NULL,
     bool $send_response = TRUE,
-    int $capture = self::DISPATCH_NO_CAPTURE
+    int $capture = self::DISPATCH_NO_CAPTURE,
   ): string {
     // Set/Initialize our objects to be sent in each callback.
     $this->request = $request ?: Request::createFromGlobals();
@@ -514,10 +528,10 @@ class Klein {
             if (strcasecmp($req_method, $test) === 0) {
               $method_match = TRUE;
             }
-            elseif (strcasecmp($req_method, 'HEAD') === 0
+            elseif (
+              strcasecmp($req_method, 'HEAD') === 0
               && (strcasecmp($test, 'HEAD') === 0 || strcasecmp($test, 'GET') === 0)
             ) {
-
               // Test for HEAD request (like GET)
               $method_match = TRUE;
             }
@@ -531,10 +545,10 @@ class Klein {
           $method_match = FALSE;
 
           // Test for HEAD request (like GET)
-          if (strcasecmp($req_method, 'HEAD') === 0
+          if (
+            strcasecmp($req_method, 'HEAD') === 0
             && (strcasecmp($method, 'HEAD') === 0 || strcasecmp($method, 'GET') === 0)
           ) {
-
             $method_match = TRUE;
           }
         }
@@ -560,10 +574,12 @@ class Klein {
         if ($path === '*') {
           $match = TRUE;
         }
-        elseif (($path === '404' && $matched->isEmpty() && count($methods_matched) <= 0)
-               || ($path === '405' && $matched->isEmpty() && count($methods_matched) > 0)) {
+        elseif (
+          ($path === '404' && $matched->isEmpty() && count($methods_matched) <= 0)
+          || ($path === '405' && $matched->isEmpty() && count($methods_matched) > 0)
+        ) {
           // Warn user of deprecation.
-          trigger_error(
+          @trigger_error(
             // phpcs:disable
             'Use of 404/405 "routes" is deprecated. Use $klein->onHttpError() instead.',
             // phpcs:enable
@@ -577,7 +593,6 @@ class Klein {
         elseif (isset($path[$i]) && $path[$i] === '@') {
           // @ is used to specify custom regex.
           $match = preg_match('`' . substr($path, $i + 1) . '`', $uri, $params);
-
         }
         else {
           // Compiling and matching regular expressions is relatively
@@ -650,7 +665,6 @@ class Klein {
             }
             catch (DispatchHaltedException $exception) {
               switch ($exception->getCode()) {
-
                 case DispatchHaltedException::SKIP_THIS:
                   continue 2;
 
@@ -694,7 +708,6 @@ class Klein {
       elseif ($matched->isEmpty()) {
         throw HttpException::createFromCode(404);
       }
-
     }
     catch (HttpExceptionInterface $exception) {
       // Grab our original response lock state.
@@ -707,7 +720,6 @@ class Klein {
       if (!$locked) {
         $this->response->unlock();
       }
-
     }
     catch (\Throwable $exception) {
       $this->error($exception);
@@ -716,7 +728,6 @@ class Klein {
     try {
       if ($this->response->chunked) {
         $this->response->chunk();
-
       }
       else {
         // Output capturing behavior.
@@ -914,7 +925,7 @@ class Klein {
    *
    * @link https://github.com/gbouthenot
    */
-  public function getPathFor(string $route_name, array $params = NULL, bool $flatten_regex = TRUE): string {
+  public function getPathFor(string $route_name, ?array $params = NULL, bool $flatten_regex = TRUE): string {
     // First, grab the route.
     $route = $this->routes->get($route_name);
 
@@ -933,7 +944,9 @@ class Klein {
         [$block, $pre, , $param, $optional] = $match;
 
         if (isset($params[$param])) {
-          return $pre . $params[$param];
+          $p = $params[$param];
+          $pStr = is_scalar($p) ? (string) $p : '';
+          return $pre . $pStr;
         }
         elseif ($optional) {
           return '';
@@ -1043,10 +1056,8 @@ class Klein {
             }
           }
           else {
-            if (isset($this->service, $this->response)) {
-              $this->service->flash((string) $error);
-              $this->response->redirect($callback);
-            }
+            $this->service->flash((string) $error);
+            $this->response->redirect($callback);
           }
         }
       }
@@ -1094,7 +1105,11 @@ class Klein {
    * @param mixed[] $methods_matched
    *   The HTTP methods that were matched in dispatch.
    */
-  protected function httpError(HttpExceptionInterface $http_exception, RouteCollection $matched, array $methods_matched): void {
+  protected function httpError(
+    HttpExceptionInterface $http_exception,
+    RouteCollection $matched,
+    array $methods_matched,
+  ): void {
     if (!$this->response->isLocked()) {
       $this->response->code($http_exception->getCode());
     }

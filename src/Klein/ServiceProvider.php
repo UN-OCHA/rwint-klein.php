@@ -161,13 +161,13 @@ class ServiceProvider {
       $params = $type;
       $type = 'info';
     }
-    if (!isset($_SESSION['__flashes'])) {
-      $_SESSION['__flashes'] = [$type => []];
+    /** @var array<string, array<int, string>> $flashes */
+    $flashes = isset($_SESSION['__flashes']) && is_array($_SESSION['__flashes']) ? $_SESSION['__flashes'] : [];
+    if (!isset($flashes[$type])) {
+      $flashes[$type] = [];
     }
-    elseif (!isset($_SESSION['__flashes'][$type])) {
-      $_SESSION['__flashes'][$type] = [];
-    }
-    $_SESSION['__flashes'][$type][] = $this->markdown($msg, $params);
+    $flashes[$type][] = $this->markdown($msg, $params);
+    $_SESSION['__flashes'] = $flashes;
   }
 
   /**
@@ -182,21 +182,22 @@ class ServiceProvider {
   public function flashes(?string $type = NULL): array {
     $this->startSession();
 
-    if (!isset($_SESSION['__flashes'])) {
+    if (!isset($_SESSION['__flashes']) || !is_array($_SESSION['__flashes'])) {
       return [];
     }
 
+    /** @var array<string, array<int, mixed>> $sessionFlashes */
+    $sessionFlashes = $_SESSION['__flashes'];
+
     if (NULL === $type) {
-      $flashes = $_SESSION['__flashes'];
+      $flashes = $sessionFlashes;
       unset($_SESSION['__flashes']);
+      return $flashes;
     }
-    else {
-      $flashes = [];
-      if (isset($_SESSION['__flashes'][$type])) {
-        $flashes = $_SESSION['__flashes'][$type];
-        unset($_SESSION['__flashes'][$type]);
-      }
-    }
+
+    $flashes = $sessionFlashes[$type] ?? [];
+    unset($sessionFlashes[$type]);
+    $_SESSION['__flashes'] = $sessionFlashes;
 
     return $flashes;
   }
@@ -221,7 +222,7 @@ class ServiceProvider {
     if (!is_string($string)) {
       return '';
     }
-    return static::doMarkdown($string, array_values($args));
+    return static::doMarkdown($string, $args);
   }
 
   /**

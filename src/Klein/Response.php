@@ -101,6 +101,10 @@ class Response extends AbstractResponse {
       throw new ResponseAlreadySentException('Response has already been sent');
     }
 
+    if (!is_file($path) || !is_readable($path)) {
+      throw new \RuntimeException('The file could not be read');
+    }
+
     $this->body('');
     $this->noCache();
 
@@ -111,7 +115,6 @@ class Response extends AbstractResponse {
       $finfo = finfo_open(FILEINFO_MIME_TYPE);
       if ($finfo !== FALSE) {
         $mimetype = finfo_file($finfo, $path) ?: 'unknown';
-        finfo_close($finfo);
       }
     }
 

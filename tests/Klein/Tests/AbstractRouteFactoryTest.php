@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace Klein\Tests;
 
+use Klein\AbstractRouteFactory;
+use PHPUnit\Framework\MockObject\MockBuilder;
+
 /**
  * Abstract Route Factory Test.
  */
@@ -24,7 +27,7 @@ class AbstractRouteFactoryTest extends AbstractKleinTest {
   /**
    * Helpers.
    */
-  protected function getDefaultMethodsToMock() {
+  protected function getDefaultMethodsToMock(): array {
     return [
       'build',
     ];
@@ -33,18 +36,20 @@ class AbstractRouteFactoryTest extends AbstractKleinTest {
   /**
    * Get mock for factory.
    */
-  protected function getMockForFactory() {
-    return $this->getMockForAbstractClass('\Klein\AbstractRouteFactory');
+  protected function getMockForFactory(): AbstractRouteFactory {
+    return $this->getMockBuilder(AbstractRouteFactory::class)
+      ->onlyMethods($this->getDefaultMethodsToMock())
+      ->getMock();
   }
 
   /**
    * Get mock builder for factory.
    */
-  protected function getMockBuilderForFactory(array $methods_to_mock = NULL) {
-    $methods_to_mock = $methods_to_mock ?: $this->getDefaultMethodsToMock();
+  protected function getMockBuilderForFactory(?array $methods_to_mock = NULL): MockBuilder {
+    $methods_to_mock = $methods_to_mock ?? $this->getDefaultMethodsToMock();
 
-    return $this->getMockBuilder('\Klein\AbstractRouteFactory')
-      ->setMethods($methods_to_mock);
+    return $this->getMockBuilder(AbstractRouteFactory::class)
+      ->onlyMethods($methods_to_mock);
   }
 
   /**
